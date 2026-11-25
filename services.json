@@ -1,0 +1,150 @@
+[
+  {
+    "id": "clave",
+    "siteId": "clave",
+    "name": "Cl@ve · Portal",
+    "category": "Identidad digital",
+    "url": "https://clave.gob.es/",
+    "marker": "<title>Cl@ve"
+  },
+  {
+    "id": "clave-registro",
+    "siteId": "clave",
+    "name": "Cl@ve · Información de registro",
+    "category": "Identidad digital",
+    "url": "https://clave.gob.es/registro/como-puedo-registrarme",
+    "marker": "<title>Cl@ve | Registro"
+  },
+  {
+    "id": "carpeta-ciudadana",
+    "siteId": "carpeta-ciudadana",
+    "name": "Mi Carpeta Ciudadana · Portal",
+    "category": "Trámites",
+    "url": "https://carpetaciudadana.gob.es/",
+    "marker": "<title>Carpeta Ciudadana</title>"
+  },
+  {
+    "id": "carpeta-ciudadana-informacion",
+    "siteId": "carpeta-ciudadana",
+    "name": "Mi Carpeta Ciudadana · Más información",
+    "category": "Trámites",
+    "url": "https://masinformacioncarpeta.carpetaciudadana.gob.es/infocc/masInformacion/que-es-mi-carpeta-ciudadana",
+    "marker": "Mi Carpeta Ciudadana | ¿Qué es Mi Carpeta Ciudadana?"
+  },
+  {
+    "id": "boe",
+    "siteId": "boe",
+    "name": "BOE · API de sumarios",
+    "category": "Legislación",
+    "url": "https://www.boe.es/datosabiertos/api/boe/sumario/20240529",
+    "marker": "\"fecha_publicacion\""
+  },
+  {
+    "id": "boe-portal",
+    "siteId": "boe",
+    "name": "BOE · Portal",
+    "category": "Legislación",
+    "url": "https://www.boe.es/",
+    "marker": "<title>BOE.es - Agencia Estatal"
+  },
+  {
+    "id": "ine",
+    "siteId": "ine",
+    "name": "INE · API del IPC",
+    "category": "Estadística",
+    "url": "https://servicios.ine.es/wstempus/js/ES/DATOS_TABLA/50902?nult=1",
+    "marker": "\"FK_Unidad\""
+  },
+  {
+    "id": "ine-portal",
+    "siteId": "ine",
+    "name": "INE · Portal",
+    "category": "Estadística",
+    "url": "https://www.ine.es/",
+    "marker": "<title>INE. Instituto Nacional de Estadística"
+  },
+  {
+    "id": "catastro",
+    "siteId": "catastro",
+    "name": "Catastro · Callejero",
+    "category": "Territorio",
+    "url": "https://ovc.catastro.meh.es/OVCServWeb/OVCWcfCallejero/COVCCallejero.svc/json/ObtenerProvincias",
+    "marker": "\"consulta_provincieroResult\""
+  },
+  {
+    "id": "catastro-portal",
+    "siteId": "catastro",
+    "name": "Catastro · Portal",
+    "category": "Territorio",
+    "url": "https://www.catastro.hacienda.gob.es/",
+    "marker": "<title>Portal del Catastro"
+  },
+  {
+    "id": "cita-previa-dni",
+    "siteId": "cita-previa-dni",
+    "name": "Cita Previa DNI · Portal",
+    "category": "Trámites",
+    "url": "https://www.citapreviadnie.es/citaPreviaDni/Index.action",
+    "marker": "href=\"Inicio.action\"",
+    "coverageNote": "Estado por provincia sin verificar. La selección de provincia requiere identificarse."
+  },
+  {
+    "id": "cita-previa-dni-acceso",
+    "siteId": "cita-previa-dni",
+    "name": "Cita Previa DNI · Opciones de acceso",
+    "category": "Trámites",
+    "url": "https://www.citapreviadnie.es/citaPreviaDni/Inicio.action",
+    "marker": "href=\"InicioDNINIE.action\""
+  },
+  {
+    "id": "cita-previa-dni-formulario",
+    "siteId": "cita-previa-dni",
+    "name": "Cita Previa DNI · Formulario de acceso",
+    "category": "Trámites",
+    "url": "https://www.citapreviadnie.es/citaPreviaDni/InicioDNINIE.action",
+    "marker": "<h1>Entrada al Sistema</h1>"
+  },
+  {
+    "id": "renfe-portal",
+    "siteId": "renfe",
+    "name": "Renfe · Portal",
+    "category": "Transporte",
+    "url": "https://www.renfe.com/es/es",
+    "marker": "<title>Renfe | Billetes de tren"
+  },
+  {
+    "id": "renfe-tiempo-real",
+    "siteId": "renfe",
+    "name": "Renfe · Trenes en tiempo real",
+    "category": "Transporte",
+    "url": "https://tiempo-real.largorecorrido.renfe.com/renfe-visor/flotaLD.json",
+    "marker": "\"trenes\"",
+    "coverageNote": "Comprueba la respuesta del visor de Alta Velocidad, Larga y Media Distancia. La actualidad de los datos queda sin verificar."
+  },
+  {
+    "id": "renfe-horarios",
+    "siteId": "renfe",
+    "name": "Renfe · Horarios GTFS",
+    "category": "Transporte",
+    "url": "https://ssl.renfe.com/gtransit/Fichero_AV_LD/google_transit.zip",
+    "marker": "50 4B 03 04",
+    "markerType": "hex-prefix",
+    "coverageNote": "Comprueba la cabecera ZIP del archivo de horarios. El contenido y la vigencia del horario quedan sin verificar."
+  },
+  {
+    "id": "contratacion-plataforma",
+    "siteId": "contratacion",
+    "name": "Contratación del Estado · Licitaciones de la plataforma",
+    "category": "Contratación pública",
+    "url": "https://contrataciondelestado.es/sindicacion/sindicacion_643/licitacionesPerfilesContratanteCompleto3.atom",
+    "marker": "<id>https://contrataciondelestado.es/sindicacion/sindicacion_643/licitacionesPerfilesContratanteCompleto3.atom</id>"
+  },
+  {
+    "id": "contratacion-autonomicas",
+    "siteId": "contratacion",
+    "name": "Contratación del Estado · Licitaciones autonómicas agregadas",
+    "category": "Contratación pública",
+    "url": "https://contrataciondelestado.es/sindicacion/sindicacion_1044/PlataformasAgregadasSinMenores.atom",
+    "marker": "<id>https://contrataciondelestado.es/sindicacion/sindicacion_1044/PlataformasAgregadasSinMenores.atom</id>"
+  }
+]

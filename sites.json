@@ -1,0 +1,42 @@
+{
+  "clave": {
+    "name": "Cl@ve",
+    "url": "https://clave.gob.es/",
+    "logo": "/assets/logos/clave.png"
+  },
+  "carpeta-ciudadana": {
+    "name": "Mi Carpeta Ciudadana",
+    "url": "https://carpetaciudadana.gob.es/",
+    "logo": "/assets/logos/carpeta-ciudadana.png"
+  },
+  "boe": {
+    "name": "Boletín Oficial del Estado",
+    "url": "https://www.boe.es/",
+    "logo": "/assets/logos/boe.png"
+  },
+  "ine": {
+    "name": "Instituto Nacional de Estadística",
+    "url": "https://www.ine.es/",
+    "logo": "/assets/logos/ine.png"
+  },
+  "catastro": {
+    "name": "Dirección General del Catastro",
+    "url": "https://www.catastro.hacienda.gob.es/",
+    "logo": "/assets/logos/catastro.png"
+  },
+  "cita-previa-dni": {
+    "name": "Cita Previa DNI",
+    "url": "https://www.citapreviadnie.es/citaPreviaDni/Index.action",
+    "logo": "/assets/logos/cita-previa-dni.png"
+  },
+  "renfe": {
+    "name": "Renfe",
+    "url": "https://www.renfe.com/es/es",
+    "logo": "/assets/logos/renfe.png"
+  },
+  "contratacion": {
+    "name": "Contratación del Estado",
+    "url": "https://contrataciondelestado.es/wps/portal/plataforma",
+    "logo": "/assets/logos/contratacion.png"
+  }
+}
