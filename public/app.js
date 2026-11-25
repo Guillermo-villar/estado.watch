@@ -358,8 +358,11 @@ function renderSummary() {
   const lifetime = mergeLifetimes(reports.map((report) => report.lifetime));
   byId('kpi-lifetime').textContent = (lifetime && rate(lifetime.up, lifetime.down)) || '—';
   byId('kpi-lifetime-note').textContent = lifetime
-    ? `${sinceLabel(lifetime.since, true)} · ${plural(lifetime.up + lifetime.down, 'medición', 'mediciones')}`
+    ? plural(lifetime.up + lifetime.down, 'medición', 'mediciones')
     : 'Sin histórico todavía';
+  const since = byId('overview-since');
+  since.hidden = !lifetime;
+  since.textContent = lifetime ? `Se mide desde el ${dayFull.format(new Date(`${lifetime.since}T12:00:00Z`))}` : '';
 
   const recent = totals(new Map(reports.map((report, i) => [i, report.recent])));
   byId('kpi-recent').textContent = rate(recent.up, recent.down) || '—';
@@ -459,6 +462,7 @@ async function load(announce = false) {
       byId('overall').textContent = 'Monitor no disponible';
       byId('overview-count').hidden = false;
       byId('overview-count').textContent = 'No se pudo conectar. Se reintentará automáticamente.';
+      byId('overview-since').hidden = true;
       byId('updated').textContent = '';
       list.replaceChildren(el('p', 'empty', 'No se pudieron cargar las mediciones.'));
     }
