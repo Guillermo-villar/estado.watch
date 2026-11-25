@@ -4,6 +4,7 @@ const byId = (id) => document.getElementById(id);
 const timeZone = 'Europe/Madrid';
 const dateKey = new Intl.DateTimeFormat('sv-SE', { timeZone, year: 'numeric', month: '2-digit', day: '2-digit' });
 const dayShort = new Intl.DateTimeFormat('es-ES', { timeZone: 'UTC', day: 'numeric', month: 'short' });
+const startDay = new Intl.DateTimeFormat('es-ES', { timeZone: 'UTC', day: 'numeric', month: 'long' });
 const dayFull = new Intl.DateTimeFormat('es-ES', { timeZone: 'UTC', day: 'numeric', month: 'long', year: 'numeric' });
 const dayCompact = new Intl.DateTimeFormat('es-ES', { timeZone: 'UTC', day: 'numeric', month: 'short', year: 'numeric' });
 const dateTime = new Intl.DateTimeFormat('es-ES', { timeZone, dateStyle: 'short', timeStyle: 'short' });
@@ -362,7 +363,13 @@ function renderSummary() {
     : 'Sin histórico todavía';
   const since = byId('overview-since');
   since.hidden = !lifetime;
-  since.textContent = lifetime ? `Se mide desde el ${dayFull.format(new Date(`${lifetime.since}T12:00:00Z`))}` : '';
+  if (lifetime) {
+    const date = new Date(`${lifetime.since}T12:00:00Z`);
+    const label = startDay.formatToParts(date).map(({ type, value }) =>
+      type === 'month' ? value[0].toUpperCase() + value.slice(1) : value
+    ).join('');
+    since.textContent = `Midiendo desde el ${label}`;
+  }
 
   const recent = totals(new Map(reports.map((report, i) => [i, report.recent])));
   byId('kpi-recent').textContent = rate(recent.up, recent.down) || '—';
