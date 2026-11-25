@@ -3,6 +3,7 @@ import { DatabaseSync } from 'node:sqlite';
 import { readFileSync, mkdirSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import { gzipSync } from 'node:zlib';
+import { longOutageDays, sampleOutages } from './outages.js';
 import { probe } from './monitor.js';
 
 const here = (path) => fileURLToPath(new URL(path, import.meta.url));
@@ -49,11 +50,11 @@ function refresh() {
   snapshot = JSON.stringify({
     generatedAt: new Date().toISOString(),
     intervalSeconds,
-    services: services.map((service) => ({
-      ...service,
-      lifetime: lifetime(service),
-      samples: select.all(service.id, service.url, cutoff()),
-    })),
+    services: services.map((service) => {
+      const samples = select.all(service.id, service.url, cutoff());
+      return { ...service, lifetime: lifetime(service), samples,
+        longOutageDays: longOutageDays(sampleOutages(samples)) };
+    }),
   });
   compressed = gzipSync(snapshot);
 }

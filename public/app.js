@@ -117,6 +117,9 @@ function summarize(service, now) {
   for (const day of Array.isArray(service.daily) ? service.daily : []) {
     if (counts.has(day.day)) counts.set(day.day, { up: +day.up || 0, down: +day.down || 0, unknown: +day.unknown || 0 });
   }
+  for (const key of service.longOutageDays || []) {
+    if (counts.has(key)) counts.get(key).longOutage = true;
+  }
   const recent = totals(counts);
   const stale = Boolean(latest) && now - latestTime > dataset.intervalSeconds * 2000;
   const current = !latest || stale || !Object.hasOwn(labels, latest.state) ? 'unknown' : latest.state;
@@ -156,6 +159,7 @@ function groupSites() {
         const day = site.counts.get(key);
         day.up += value.up;
         day.down += value.down;
+        if (value.longOutage) day.longOutage = true;
         day.unknown += value.unknown;
       }
     }
@@ -170,15 +174,17 @@ function groupSites() {
   return [...groups.values()];
 }
 
-function describeDay({ up, down, unknown }) {
+function describeDay({ up, down, unknown, longOutage }) {
   if (!up && !down) return unknown ? `${plural(unknown, 'no concluyente', 'no concluyentes')}` : 'Sin mediciones';
   const parts = [`${plural(up, 'correcta', 'correctas')}`, `${plural(down, 'fallo', 'fallos')}`];
   if (unknown) parts.push(plural(unknown, 'no concluyente', 'no concluyentes'));
+  if (longOutage) parts.push('caída de más de 3 h');
   return parts.join(' · ');
 }
 
 function dayState(counts) {
-  return counts.down ? 'down' : counts.up ? 'up' : 'unknown';
+  if (counts.longOutage) return 'down';
+  return counts.down ? 'partial' : counts.up ? 'up' : 'unknown';
 }
 
 function pill(state, text) {

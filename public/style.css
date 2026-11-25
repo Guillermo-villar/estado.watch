@@ -177,6 +177,7 @@ a { color: inherit; }
 .bar { display: grid; justify-items: center; color: var(--unknown); }
 .bar::before { content: ""; width: 3px; height: 23px; align-self: center; border-radius: 2px; background: currentColor; }
 .bar[data-state='up'] { color: var(--up); }
+.bar[data-state='partial'] { color: #cc9900; }
 .bar[data-state='down'] { color: var(--down); }
 .bar:hover { opacity: .7; }
 .axis { display: flex; justify-content: space-between; gap: 8px; margin-top: 5px; font-size: 11.5px; color: var(--muted); font-variant-numeric: tabular-nums; }
@@ -203,6 +204,7 @@ a { color: inherit; }
 .legend li { display: flex; align-items: center; gap: 6px; }
 .swatch { width: 10px; height: 10px; border-radius: 2px; background: var(--unknown); }
 .swatch[data-state='up'] { background: var(--up); }
+.swatch[data-state='partial'] { background: #cc9900; }
 .swatch[data-state='down'] { background: var(--down); }
 .empty, .notice { padding: 28px 16px; text-align: center; color: var(--muted); }
 .notice { padding: 10px 16px; background: var(--down-bg); color: var(--down-fg); font-size: 13.5px; border-bottom: 1px solid var(--line); }
