@@ -22,6 +22,8 @@ db.exec(`CREATE TABLE IF NOT EXISTS samples (
   id TEXT NOT NULL, url TEXT NOT NULL, at TEXT NOT NULL, state TEXT NOT NULL,
   ms INTEGER NOT NULL, detail TEXT NOT NULL, PRIMARY KEY(id,url,at)
 )`);
+// The primary key starts with id, so pruning by date needs its own index.
+db.exec('CREATE INDEX IF NOT EXISTS samples_at ON samples(at)');
 db.exec('BEGIN IMMEDIATE');
 try {
   if (!db.prepare("SELECT 1 FROM sqlite_master WHERE name='count_sample' AND type='trigger'").get()) {
@@ -112,7 +114,9 @@ const server = createServer((req, res) => {
     try {
       const body = readFileSync(here(file));
       res
-        .writeHead(200, { 'Content-Type': type + '; charset=utf-8' })
+        .writeHead(200, {
+          'Content-Type': type === 'image/png' ? type : type + '; charset=utf-8',
+        })
         .end(body);
     } catch {
       res.writeHead(500).end();
