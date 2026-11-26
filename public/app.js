@@ -180,7 +180,7 @@ function describeDay({ up, down, unknown, longOutage }) {
   const parts = [`${plural(up, 'correcta', 'correctas')}`, `${plural(down, 'fallo', 'fallos')}`];
   if (unknown) parts.push(plural(unknown, 'no concluyente', 'no concluyentes'));
   if (longOutage) parts.push('caída de más de 3 h');
-  return parts.join(' · ');
+  return parts.join(', ');
 }
 
 function dayState(counts) {
@@ -209,10 +209,10 @@ function lifetimeCell(lifetime) {
   label.setAttribute('aria-hidden', 'true');
   cell.append(label);
   const value = lifetime ? rate(lifetime.up, lifetime.down) : null;
-  const strong = el('strong', '', value || '—');
+  const strong = el('strong', '', value || 'Sin datos');
   strong.prepend(el('span', 'sr-only', 'Disponibilidad histórica: '));
   cell.append(strong);
-  cell.append(el('small', '', lifetime ? sinceLabel(lifetime.since, true) : 'sin histórico'));
+  if (lifetime) cell.append(el('small', '', sinceLabel(lifetime.since, true)));
   return cell;
 }
 
@@ -234,7 +234,7 @@ function chart(counts, recent) {
   end.setAttribute('aria-hidden', 'true');
   axis.append(start);
   if (recent) {
-    const value = el('strong', '', rate(recent.up, recent.down) || 'sin datos');
+    const value = el('strong', '', rate(recent.up, recent.down) || 'Sin datos');
     value.prepend(el('span', 'sr-only', 'Disponibilidad en los últimos 30 días: '));
     axis.append(value);
   }
@@ -289,7 +289,8 @@ function siteRow(site) {
   summary.dataset.site = site.id;
   const who = el('span', 'who');
   const text = el('span', 'who-text');
-  text.append(el('strong', '', site.name), el('span', '', [site.domain, plural(site.reports.length, 'servicio', 'servicios')].filter(Boolean).join(' · ')));
+  text.append(el('strong', '', site.name));
+  if (site.domain) text.append(el('span', '', site.domain));
   who.append(siteLogo(site), text);
   summary.append(who, lifetimeCell(site.lifetime), chart(site.counts, site.recent), pill(site.current, site.label), chevron());
   const services = el('ul', 'services');
@@ -325,7 +326,7 @@ function renderList(announce = false) {
     if (focused) query.focus({ preventScroll: true });
   }
   const count = visible.length === sites.length
-    ? plural(sites.length, 'web', 'webs') + ' · ' + plural(reports.length, 'servicio', 'servicios')
+    ? plural(sites.length, 'web', 'webs')
     : `${number.format(visible.length)} de ${plural(sites.length, 'web', 'webs')}`;
   byId('visible-count').textContent = count;
   if (announce) byId('announcement').textContent = count;
@@ -347,7 +348,7 @@ function renderSummary() {
     title = 'Todos los servicios operativos';
     state = 'up';
   } else if (counts.up) {
-    title = 'Servicios operativos, alguno sin confirmar';
+    title = 'Algunos servicios sin confirmar';
   }
   byId('overview').dataset.state = state;
   byId('overall').textContent = title;
@@ -357,10 +358,10 @@ function renderSummary() {
   byId('updated').textContent = latestTime ? `Actualizado ${timeOnly.format(latestTime)}` : '';
 
   const lifetime = mergeLifetimes(reports.map((report) => report.lifetime));
-  byId('kpi-lifetime').textContent = (lifetime && rate(lifetime.up, lifetime.down)) || '—';
+  byId('kpi-lifetime').textContent = (lifetime && rate(lifetime.up, lifetime.down)) || 'Sin datos';
   byId('kpi-lifetime-note').textContent = lifetime
     ? plural(lifetime.up + lifetime.down, 'medición', 'mediciones')
-    : 'Sin histórico todavía';
+    : '';
   const since = byId('overview-since');
   since.hidden = !lifetime;
   if (lifetime) {
@@ -368,18 +369,15 @@ function renderSummary() {
     const label = startDay.formatToParts(date).map(({ type, value }) =>
       type === 'month' ? value[0].toUpperCase() + value.slice(1) : value
     ).join('');
-    since.textContent = `Midiendo desde el ${label}`;
+    since.textContent = `Desde el ${label}`;
   }
 
   const recent = totals(new Map(reports.map((report, i) => [i, report.recent])));
-  byId('kpi-recent').textContent = rate(recent.up, recent.down) || '—';
+  byId('kpi-recent').textContent = rate(recent.up, recent.down) || 'Sin datos';
   byId('kpi-recent-note').textContent = plural(recent.up + recent.down, 'medición', 'mediciones');
 
   byId('kpi-now').textContent = `${number.format(counts.up)}/${number.format(reports.length)}`;
-  const nowNote = [];
-  if (counts.down) nowNote.push(plural(counts.down, 'incidencia', 'incidencias'));
-  if (counts.unknown) nowNote.push(`${number.format(counts.unknown)} sin confirmar`);
-  byId('kpi-now-note').textContent = nowNote.join(' · ');
+  byId('kpi-now-note').textContent = counts.unknown ? `${number.format(counts.unknown)} sin confirmar` : '';
 }
 
 function renderDetail(report) {
@@ -388,15 +386,15 @@ function renderDetail(report) {
   const status = report.current === 'unknown' && latest && !stale ? 'No concluyente' : labels[report.current];
   byId('detail-status').replaceChildren(pill(report.current, status));
 
-  byId('detail-lifetime').textContent = (lifetime && rate(lifetime.up, lifetime.down)) || '—';
+  byId('detail-lifetime').textContent = (lifetime && rate(lifetime.up, lifetime.down)) || 'Sin datos';
   byId('detail-lifetime-note').textContent = lifetime
-    ? `${sinceLabel(lifetime.since, true)} · ${plural(lifetime.up + lifetime.down, 'medición', 'mediciones')}`
-    : 'Sin histórico';
-  byId('detail-recent').textContent = rate(recent.up, recent.down) || '—';
+    ? `${plural(lifetime.up + lifetime.down, 'medición', 'mediciones')} ${sinceLabel(lifetime.since, true)}`
+    : '';
+  byId('detail-recent').textContent = rate(recent.up, recent.down) || 'Sin datos';
   byId('detail-recent-note').textContent = plural(recent.up + recent.down, 'medición', 'mediciones');
-  byId('detail-last').textContent = latest ? timeOnly.format(latestTime) : '—';
-  const ms = latest && Number.isFinite(latest.ms) ? ` · ${number.format(latest.ms)} ms` : '';
-  byId('detail-last-note').textContent = latest ? `${dayCompact.format(new Date(`${dateKey.format(latestTime)}T12:00:00Z`))}${ms}` : 'Sin mediciones';
+  byId('detail-last').textContent = latest ? timeOnly.format(latestTime) : 'Sin mediciones';
+  const ms = latest && Number.isFinite(latest.ms) ? `, ${number.format(latest.ms)} ms` : '';
+  byId('detail-last-note').textContent = latest ? `${dayCompact.format(new Date(`${dateKey.format(latestTime)}T12:00:00Z`))}${ms}` : '';
   byId('detail-chart').replaceChildren(chart(counts));
 
   const note = byId('detail-note');
@@ -410,7 +408,7 @@ function renderDetail(report) {
   if (url) link.href = url.href;
   else link.removeAttribute('href');
   byId('detail-target').hidden = !service.url && !service.marker;
-  byId('target-url').textContent = service.url || '—';
+  byId('target-url').textContent = service.url || 'Sin dirección';
   byId('marker-label').textContent = service.markerType === 'hex-prefix' ? 'Cabecera esperada (hexadecimal)' : 'Texto esperado';
   byId('marker-label').hidden = !service.marker;
   byId('target-marker').hidden = !service.marker;
@@ -435,7 +433,7 @@ function render() {
   renderSummary();
   filters.hidden = sites.length < 2;
   renderList();
-  byId('interval-description').textContent = `El estado actual pasa a «sin confirmar» si la última comprobación no fue concluyente o tiene más de dos intervalos (${number.format(dataset.intervalSeconds / 60)} min cada uno).`;
+  byId('interval-description').textContent = `El estado queda sin confirmar si la última comprobación no fue concluyente o han pasado más de ${number.format(2 * dataset.intervalSeconds / 60)} min desde entonces.`;
   if (dialog.open) {
     const report = reports.find(({ service }) => service.id === selectedId);
     if (report) renderDetail(report);
@@ -467,11 +465,10 @@ async function load(announce = false) {
       notice.textContent = 'No se pudo actualizar. Se muestran las últimas mediciones recibidas.';
     } else {
       byId('overall').textContent = 'Monitor no disponible';
-      byId('overview-count').hidden = false;
-      byId('overview-count').textContent = 'No se pudo conectar. Se reintentará automáticamente.';
+      byId('overview-count').hidden = true;
       byId('overview-since').hidden = true;
       byId('updated').textContent = '';
-      list.replaceChildren(el('p', 'empty', 'No se pudieron cargar las mediciones.'));
+      list.replaceChildren(el('p', 'empty', 'Pulsa Actualizar o espera al próximo intento.'));
     }
     notice.hidden = !dataset;
   } finally {

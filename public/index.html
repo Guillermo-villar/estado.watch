@@ -58,7 +58,7 @@
         </span>
       </a>
       <div class="sync">
-        <span id="updated" class="updated">Cargando…</span>
+        <span id="updated" class="updated"></span>
         <button id="refresh" class="icon-button" type="button" aria-label="Actualizar" title="Actualizar">
           <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 11a8 8 0 1 0-2 6m2-11v5h-5"></path></svg>
         </button>
@@ -85,18 +85,18 @@
       <dl class="kpis">
         <div class="kpi kpi-lifetime">
           <dt>Disponibilidad histórica</dt>
-          <dd id="kpi-lifetime">—</dd>
-          <small id="kpi-lifetime-note">Sin datos todavía</small>
+          <dd id="kpi-lifetime">Sin datos</dd>
+          <small id="kpi-lifetime-note"></small>
         </div>
         <div class="kpi">
           <dt>Últimos 30 días</dt>
-          <dd id="kpi-recent">—</dd>
-          <small id="kpi-recent-note">&nbsp;</small>
+          <dd id="kpi-recent">Sin datos</dd>
+          <small id="kpi-recent-note"></small>
         </div>
         <div class="kpi">
           <dt>Operativos ahora</dt>
-          <dd id="kpi-now">—</dd>
-          <small id="kpi-now-note">&nbsp;</small>
+          <dd id="kpi-now">Sin datos</dd>
+          <small id="kpi-now-note"></small>
         </div>
       </dl>
     </section>
@@ -106,9 +106,8 @@
         <h2 id="board-title">Webs monitorizadas</h2>
         <form id="filters" class="filters" role="search" aria-label="Filtrar webs" hidden>
           <label class="search-field">
-            <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="10.5" cy="10.5" r="5.5"></circle><path d="m15 15 4 4"></path></svg>
             <span class="sr-only">Buscar web o servicio</span>
-            <input type="search" id="query" placeholder="Buscar" autocomplete="off">
+            <input type="search" id="query" placeholder="Buscar web o servicio" autocomplete="off">
           </label>
           <label class="select-field"><span class="sr-only">Estado</span>
             <select id="state">
@@ -130,9 +129,7 @@
         </div>
         <p id="announcement" class="sr-only" aria-live="polite" aria-atomic="true"></p>
         <p id="feed-notice" class="notice" role="status" hidden></p>
-        <div id="service-list" aria-busy="true">
-          <p class="empty">Cargando…</p>
-        </div>
+        <div id="service-list" aria-busy="true"></div>
       </div>
 
       <div class="board-foot">
@@ -152,7 +149,7 @@
       <ul>
         <li>Cada cinco minutos se hace una petición GET a la URL del servicio. Se considera operativo cuando devuelve HTTP 2xx y contiene el marcador esperado.</li>
         <li>Errores del servidor, de conexión o tiempos de espera cuentan como fallo. Si la sonda no puede resolver el dominio, la comprobación queda sin confirmar. Solo las comprobaciones concluyentes entran en el porcentaje.</li>
-        <li>El <strong>uptime histórico</strong> divide las comprobaciones operativas entre el total de concluyentes desde la primera medición. Los totales de cada web y el global suman las mediciones de sus servicios.</li>
+        <li>La <strong>disponibilidad histórica</strong> es el porcentaje de comprobaciones concluyentes en las que el servicio estuvo operativo, desde la primera medición. Los totales de cada web y el global suman las mediciones de sus servicios.</li>
         <li>Las barras cubren los <strong>últimos 30 días</strong> en hora peninsular. El amarillo indica fallos. El rojo indica que un mismo servicio acumuló más de tres horas seguidas entre comprobaciones fallidas. Si la caída cruza medianoche, se marcan ambos días.</li>
         <li id="interval-description">El estado actual pasa a «sin confirmar» si la última comprobación no fue concluyente o está desactualizada.</li>
         <li>Las sondas consultan directamente las webs y APIs de cada organismo. <a href="https://reforma-digital.es/developers/mcp">Catálogo de Reforma Digital</a>.</li>
@@ -162,13 +159,7 @@
 
   <footer class="footer">
     <div class="shell footer-in">
-      <div class="footer-brand">
-        <span class="mark" aria-hidden="true"></span>
-        <div>
-          <p class="wordmark">estado<span class="t">.watch</span></p>
-          <p class="footer-note">Monitor independiente de servicios públicos.</p>
-        </div>
-      </div>
+      <p class="footer-note">Monitor independiente de servicios públicos.</p>
       <a class="footer-credit" href="https://www.g-villar.tech/">Hecho por Guillermo Villar <span aria-hidden="true">↗</span></a>
     </div>
   </footer>
