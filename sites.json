@@ -38,35 +38,5 @@
     "name": "Contratación del Estado",
     "url": "https://contrataciondelestado.es/wps/portal/plataforma",
     "logo": "/assets/logos/contratacion.png"
-  },
-  "aeat": {
-    "name": "Agencia Tributaria",
-    "url": "https://sede.agenciatributaria.gob.es/",
-    "logo": "/assets/logos/aeat.png"
-  },
-  "seg-social": {
-    "name": "Seguridad Social",
-    "url": "https://sede.seg-social.gob.es/",
-    "logo": "/assets/logos/seg-social.png"
-  },
-  "sepe": {
-    "name": "Servicio Público de Empleo Estatal",
-    "url": "https://sede.sepe.gob.es/",
-    "logo": "/assets/logos/sepe.png"
-  },
-  "registro-civil": {
-    "name": "Cita Previa Registro Civil",
-    "url": "https://sede.administracionespublicas.gob.es/icpplustiej/citar?i=es&org=JUS-RC",
-    "logo": "/assets/logos/registro-civil.png"
-  },
-  "policia": {
-    "name": "Policía Nacional",
-    "url": "https://sede.policia.gob.es/",
-    "logo": "/assets/logos/policia.png"
-  },
-  "incasol": {
-    "name": "Institut Català del Sòl",
-    "url": "https://incasol.gencat.cat/",
-    "logo": "/assets/logos/incasol.png"
   }
 }

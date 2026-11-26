@@ -72,14 +72,6 @@
     "marker": "\"consulta_provincieroResult\""
   },
   {
-    "id": "catastro-inmueble",
-    "siteId": "catastro",
-    "name": "Catastro · Consulta de inmueble",
-    "category": "Territorio",
-    "url": "https://ovc.catastro.meh.es/OVCServWeb/OVCWcfCallejero/COVCCallejero.svc/json/Consulta_DNPRC?RefCat=1446401VK4714E0001HZ",
-    "marker": "\"bico\""
-  },
-  {
     "id": "catastro-portal",
     "siteId": "catastro",
     "name": "Catastro · Portal",
@@ -154,82 +146,5 @@
     "category": "Contratación pública",
     "url": "https://contrataciondelestado.es/sindicacion/sindicacion_1044/PlataformasAgregadasSinMenores.atom",
     "marker": "<id>https://contrataciondelestado.es/sindicacion/sindicacion_1044/PlataformasAgregadasSinMenores.atom</id>"
-  },
-  {
-    "id": "aeat-cita",
-    "siteId": "aeat",
-    "name": "AEAT · Cita previa",
-    "category": "Trámites",
-    "url": "https://www2.agenciatributaria.gob.es/wlpl/TOCP-MUTE/internet/identificacion",
-    "marker": "FormParaQuien",
-    "coverageNote": "Comprueba el primer paso del formulario. La disponibilidad de huecos queda sin verificar."
-  },
-  {
-    "id": "seg-social-cita",
-    "siteId": "seg-social",
-    "name": "Seguridad Social · Directorio de cita previa",
-    "category": "Trámites",
-    "url": "https://sede.seg-social.gob.es/wps/portal/sede/sede/Ciudadanos/cita%20previa%20para%20pensiones%20y%20otras%20prestaciones",
-    "marker": "btnacceder_"
-  },
-  {
-    "id": "seg-social-cita-reserva",
-    "siteId": "seg-social",
-    "name": "Seguridad Social · Cita previa sin certificado",
-    "category": "Trámites",
-    "url": "https://w6.seg-social.es/ProsaInternetAnonimo/OnlineAccess?ARQ.SPM.ACTION=LOGIN&ARQ.SPM.APPTYPE=SERVICE&ARQ.IDAPP=CPMSWACS&ORGANISMO=I",
-    "marker": "<Provincias>",
-    "coverageNote": "Comprueba el primer paso de la reserva. La disponibilidad de huecos queda sin verificar."
-  },
-  {
-    "id": "sepe-cita",
-    "siteId": "sepe",
-    "name": "SEPE · Información de cita previa",
-    "category": "Trámites",
-    "url": "https://sede.sepe.gob.es/portalSede/procedimientos-y-servicios/personas/proteccion-por-desempleo/cita-previa.html",
-    "marker": "Iniciar Solicitud"
-  },
-  {
-    "id": "sepe-cita-aplicacion",
-    "siteId": "sepe",
-    "name": "SEPE · Aplicación de cita previa",
-    "category": "Trámites",
-    "url": "https://citaprevia-sede.sepe.gob.es/citapreviasepe/?origen=sepe&codidioma=es",
-    "marker": "id=\"moduloNivelesServicio\"",
-    "coverageNote": "Comprueba la carga de la aplicación. La disponibilidad de huecos queda sin verificar."
-  },
-  {
-    "id": "registro-civil-cita",
-    "siteId": "registro-civil",
-    "name": "Registro Civil · Cita previa",
-    "category": "Trámites",
-    "url": "https://sede.administracionespublicas.gob.es/icpplustiej/citar?i=es&org=JUS-RC",
-    "marker": "\"provincias\"",
-    "coverageNote": "Comprueba la lista de provincias del formulario. La disponibilidad de huecos queda sin verificar."
-  },
-  {
-    "id": "policia-oficinas",
-    "siteId": "policia",
-    "name": "Policía Nacional · Directorio de oficinas",
-    "category": "Trámites",
-    "url": "https://sede.policia.gob.es/portalCiudadano/_es/dependencias_localizador_accesible.php",
-    "marker": "id=\"extranjeria_"
-  },
-  {
-    "id": "incasol-cita",
-    "siteId": "incasol",
-    "name": "INCASÒL · Portal de cita previa",
-    "category": "Trámites",
-    "url": "https://citaprevia.gestorn.com/incasol/",
-    "marker": "Gencat - Incasol</title>"
-  },
-  {
-    "id": "incasol-cita-formulario",
-    "siteId": "incasol",
-    "name": "INCASÒL · Formulario de reserva",
-    "category": "Trámites",
-    "url": "https://citaprevia.gestorn.com/cita/v2/cita.php?idioma=es_ES&client=107&id_oficina_sele=330",
-    "marker": "id=\"origen\"",
-    "coverageNote": "Comprueba que el formulario lista sus servicios. La disponibilidad de huecos queda sin verificar."
   }
 ]

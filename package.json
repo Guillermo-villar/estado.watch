@@ -9,7 +9,8 @@
   },
   "scripts": {
     "start": "node server.js",
-    "test": "node --test"
+    "test": "node --test",
+    "observe": "node scripts/observe-sources.js"
   },
   "devDependencies": {
     "wrangler": "4.168.0"
