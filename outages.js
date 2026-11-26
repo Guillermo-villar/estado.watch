@@ -27,8 +27,9 @@ export function sampleOutages(samples) {
       continue;
     }
     const at = Date.parse(sample.at);
-    // The local scheduler waits five minutes after a round, with a 15s probe timeout.
-    if (!run || at - run.end > 330000) {
+    // The local scheduler waits five minutes after a round. A round can last up to
+    // 35s: a 15s attempt, a 5s pause and a 15s retry.
+    if (!run || at - run.end > 340000) {
       run = {start: at, end: at};
       intervals.push(run);
     }

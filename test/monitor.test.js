@@ -14,6 +14,7 @@ for (const [label, code, body, expected] of [
     const sample = await probe(
       service,
       async () => new Response(body, { status: code }),
+      { retryDelay: 0 },
     );
     assert.equal(sample.state, expected);
     assert.ok(Number.isFinite(Date.parse(sample.at)));
@@ -22,7 +23,7 @@ for (const [label, code, body, expected] of [
 test('conexión agotada', async () => {
   const result = await probe(service, async () => {
     throw new DOMException('timeout', 'TimeoutError');
-  });
+  }, { retryDelay: 0 });
   assert.equal(result.state, 'down');
   assert.equal(result.detail, 'Tiempo de espera agotado');
 });
@@ -49,4 +50,36 @@ test('una resolución DNS fallida deja el estado sin confirmar', async () => {
   });
   assert.equal(result.state, 'unknown');
   assert.match(result.detail, /DNS/);
+});
+
+test('un fallo aislado se reintenta y no cuenta como caída', async () => {
+  let calls = 0;
+  const result = await probe(service, async () => {
+    calls++;
+    return calls === 1
+      ? new Response('', { status: 503 })
+      : new Response('boletín', { status: 200 });
+  }, { retryDelay: 0 });
+  assert.equal(calls, 2);
+  assert.equal(result.state, 'up');
+});
+
+test('la caída se confirma si el reintento también falla', async () => {
+  let calls = 0;
+  const result = await probe(service, async () => {
+    calls++;
+    return new Response('', { status: 502 });
+  }, { retryDelay: 0 });
+  assert.equal(calls, 2);
+  assert.equal(result.state, 'down');
+  assert.equal(result.detail, 'HTTP 502');
+});
+
+test('los resultados no concluyentes no se reintentan', async () => {
+  let calls = 0;
+  await probe(service, async () => {
+    calls++;
+    return new Response('', { status: 429 });
+  }, { retryDelay: 0 });
+  assert.equal(calls, 1);
 });

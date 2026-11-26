@@ -1,6 +1,15 @@
 import { performance } from 'node:perf_hooks';
 
-export async function probe(service, request = fetch) {
+// A failed check is repeated once before it counts as an outage, so a single
+// dropped connection or slow response is not recorded as down.
+export async function probe(service, request = fetch, { retryDelay = 5000 } = {}) {
+  const first = await attempt(service, request);
+  if (first.state !== 'down') return first;
+  await new Promise((resolve) => setTimeout(resolve, retryDelay));
+  return attempt(service, request);
+}
+
+async function attempt(service, request) {
   const prefix = service.markerType === 'hex-prefix'
     ? Buffer.from(service.marker.replaceAll(' ', ''), 'hex')
     : null;

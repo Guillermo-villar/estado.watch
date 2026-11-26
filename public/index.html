@@ -151,7 +151,7 @@
       <summary>Cómo se mide</summary>
       <ul>
         <li>Cada cinco minutos se hace una petición GET a la URL del servicio. Se considera operativo cuando devuelve HTTP 2xx y contiene el marcador esperado.</li>
-        <li>Errores del servidor, de conexión o tiempos de espera cuentan como fallo. Si la sonda no puede resolver el dominio, la comprobación queda sin confirmar. Solo las comprobaciones concluyentes entran en el porcentaje.</li>
+        <li>Errores del servidor, de conexión o tiempos de espera cuentan como fallo si se repiten en un segundo intento cinco segundos después. Si la sonda no puede resolver el dominio, la comprobación queda sin confirmar. Solo las comprobaciones concluyentes entran en el porcentaje.</li>
         <li>El <strong>uptime histórico</strong> divide las comprobaciones operativas entre el total de concluyentes desde la primera medición. Los totales de cada web y el global suman las mediciones de sus servicios.</li>
         <li>Las barras cubren los <strong>últimos 30 días</strong> en hora peninsular. El amarillo indica fallos. El rojo indica que un mismo servicio acumuló más de tres horas seguidas entre comprobaciones fallidas. Si la caída cruza medianoche, se marcan ambos días.</li>
         <li id="interval-description">El estado actual pasa a «sin confirmar» si la última comprobación no fue concluyente o está desactualizada.</li>
