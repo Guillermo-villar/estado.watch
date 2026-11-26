@@ -1,10 +1,10 @@
+import { services } from '../catalog.js';
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 
 const read = (path) => readFileSync(new URL('../' + path, import.meta.url));
 const sites = JSON.parse(read('sites.json'));
-const services = JSON.parse(read('services.json'));
 
 test('cada sonda tiene una web conocida y un identificador único', () => {
   assert.equal(new Set(services.map(service => service.id)).size, services.length);
@@ -18,10 +18,11 @@ test('cada sonda tiene una web conocida y un identificador único', () => {
   }
 });
 
-test('cada web desplegable tiene un servicio y un icono PNG local', () => {
+test('cada web tiene un servicio y cada icono configurado es un PNG local', () => {
   for (const [id, site] of Object.entries(sites)) {
     assert.ok(services.some(service => service.siteId === id), id);
     assert.equal(new URL(site.url).protocol, 'https:');
+    if (site.logo === undefined) continue;
     assert.match(site.logo, /^\/assets\/logos\/[a-z0-9-]+\.png$/);
     assert.equal(read(site.logo.slice(1)).subarray(0, 8).toString('hex'), '89504e470d0a1a0a');
   }

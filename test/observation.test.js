@@ -2,10 +2,9 @@ import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { execFileSync } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
-import sources from '../observation-sources.json' with { type: 'json' };
-import services from '../services.json' with { type: 'json' };
+import { directSources as sources, services } from '../catalog.js';
 
-test('las seis observaciones manuales quedan fuera del catálogo público', () => {
+test('las seis observaciones también están en el catálogo programado una sola vez', () => {
   assert.deepEqual(sources.map(source => source.id).sort(), [
     'aeat-cita', 'catastro-inmueble', 'seg-social-cita',
     'seg-social-cita-reserva', 'sepe-cita', 'sepe-cita-aplicacion',
@@ -13,7 +12,7 @@ test('las seis observaciones manuales quedan fuera del catálogo público', () =
   for (const source of sources) {
     assert.equal(new URL(source.url).protocol, 'https:');
     assert.ok(source.marker.trim());
-    assert.ok(!services.some(service => service.id === source.id || service.url === source.url));
+    assert.deepEqual(services.filter(service => service.id === source.id || service.url === source.url), [source]);
   }
 });
 
@@ -23,7 +22,7 @@ test('el comando solo informa del marcador observado o de una lectura sin confir
     'aeat-cita': [200, 'Verifica tu navegador'],
     'seg-social-cita': [429, 'Demasiadas peticiones'],
     'seg-social-cita-reserva': [302, ''],
-    'sepe-cita': [200, 'Iniciar Solicitud'],
+    'sepe-cita': [200, '<a href="/portalSede/procedimientos-y-servicios/personas/proteccion-por-desempleo/cita-previa/cita-previa-solicitud.html">Iniciar Solicitud</a>'],
     'sepe-cita-aplicacion': [403, 'Acceso denegado'],
   };
   const responsesByUrl = Object.fromEntries(sources.map(source => [source.url, replies[source.id]]));

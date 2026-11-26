@@ -1,6 +1,6 @@
-import services from '../services.json';
+import { services } from '../catalog.js';
 import sites from '../sites.json';
-import { probe } from '../monitor.js';
+import { probeAll } from '../monitor.js';
 
 import { longOutageDays, threeHours } from '../outages.js';
 
@@ -24,8 +24,9 @@ const save = `INSERT INTO daily(id,url,day,up,down,unknown,tick,at,state,ms,deta
 export default {
   async scheduled(event, env) {
     const tick = event.scheduledTime;
-    const rows = await Promise.all(services.map(async service => {
-      const sample = await probe(service);
+    const samples = await probeAll(services);
+    const rows = services.map((service, index) => {
+      const sample = samples[index];
       const daily = env.DB.prepare(save).bind(service.id, service.url,
         localDay.format(new Date(sample.at)), Number(sample.state === 'up'),
         Number(sample.state === 'down'), Number(sample.state === 'unknown'),
@@ -33,7 +34,7 @@ export default {
       return sample.state === 'down'
         ? [daily, env.DB.prepare(recordOutage).bind(service.id, service.url, tick)]
         : [daily];
-    }));
+    });
     rows.push(env.DB.prepare('DELETE FROM daily WHERE day < ?')
       .bind(localDay.format(tick - 30 * 86400000)));
     rows.push(env.DB.prepare('DELETE FROM outages WHERE end < ?').bind(tick - 31 * 86400000));

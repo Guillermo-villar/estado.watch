@@ -38,7 +38,7 @@ Con el emulador en marcha, `curl http://localhost:8787/__scheduled` ejecuta una 
 
 ## Qué se mide
 
-La sonda hace un GET por recurso al arrancar y repite cinco minutos después de terminar cada ronda. Sigue redirecciones, espera hasta 15 segundos y busca el marcador configurado en los primeros 256 KiB de la respuesta. En ficheros binarios con `markerType: "hex-prefix"`, solicita únicamente el rango inicial y compara esos bytes con la firma hexadecimal configurada. El tiempo mostrado incluye la lectura del contenido comprobado.
+La sonda hace un GET por recurso al arrancar y repite cinco minutos después de terminar cada ronda. Espera hasta 15 segundos desde el inicio de cada petición y busca la evidencia configurada en los primeros 256 KiB. Las seis comprobaciones de [contenido directo](FUENTES.md#comprobaciones-de-catastro-aeat-seguridad-social-y-sepe) dejan las redirecciones y los fallos técnicos sin confirmar. Las demás sondas siguen redirecciones. En ficheros binarios con `markerType: "hex-prefix"`, solicita únicamente el rango inicial y compara esos bytes con la firma hexadecimal configurada. El tiempo mostrado incluye la lectura del contenido comprobado.
 
 - **Disponible** indica una respuesta 2xx con el marcador esperado.
 - **Caída observada** indica un error 5xx, de conexión o de tiempo de espera desde esta instancia. Una avería en la red de la sonda también puede producir ese resultado.
@@ -50,7 +50,7 @@ El uptime acumulado cuenta las comprobaciones operativas y las divide entre las 
 
 ## Datos y contribuciones
 
-`GET /api/status` devuelve el catálogo, la hora de generación UTC, la cadencia y las muestras ordenadas por fecha. El navegador consume esta misma respuesta. Para proponer un servicio, añade a [services.json](services.json) su `siteId`, un identificador estable, nombre, categoría, URL pública y marcador de contenido distintivo. Para incorporar otra web, registra su nombre, dominio y ruta del logo en [sites.json](sites.json) y añade su icono PNG en `assets/logos/`. Documenta en [FUENTES.md](FUENTES.md) qué operación cubre y cómo reproducirla.
+`GET /api/status` devuelve el catálogo, la hora de generación UTC, la cadencia y las muestras ordenadas por fecha. El navegador consume esta misma respuesta. Para proponer un servicio, añade a [services.json](services.json) su `siteId`, un identificador estable, nombre, categoría, URL pública y marcador de contenido distintivo. Para incorporar otra web, registra su nombre y dominio en [sites.json](sites.json). Si dispones de un icono para esa web, añade su PNG en `assets/logos/` y configura la ruta del logo. Documenta en [FUENTES.md](FUENTES.md) qué operación cubre y cómo reproducirla.
 
 ## Antecedentes
 

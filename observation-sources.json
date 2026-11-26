@@ -3,36 +3,54 @@
     "id": "catastro-inmueble",
     "name": "Catastro · Consulta de inmueble",
     "url": "https://ovc.catastro.meh.es/OVCServWeb/OVCWcfCallejero/COVCCallejero.svc/json/Consulta_DNPRC?RefCat=1446401VK4714E0001HZ",
-    "marker": "\"bico\""
+    "marker": "\"bico\"",
+    "siteId": "catastro",
+    "category": "Territorio",
+    "coverageNote": "Comprueba que Catastro devuelve la referencia de Cibeles 1, Madrid."
   },
   {
     "id": "aeat-cita",
-    "name": "AEAT · Cita previa",
+    "name": "AEAT · Formulario «Para quién»",
     "url": "https://www2.agenciatributaria.gob.es/wlpl/TOCP-MUTE/internet/identificacion",
-    "marker": "FormParaQuien"
+    "marker": "FormParaQuien",
+    "siteId": "aeat",
+    "category": "Trámites",
+    "coverageNote": "Comprueba el formulario inicial y su botón para continuar. La disponibilidad de citas queda sin verificar."
   },
   {
     "id": "seg-social-cita",
     "name": "Seguridad Social · Directorio de cita previa",
     "url": "https://sede.seg-social.gob.es/wps/portal/sede/sede/Ciudadanos/cita%20previa%20para%20pensiones%20y%20otras%20prestaciones",
-    "marker": "btnacceder_"
+    "marker": "btnacceder_",
+    "siteId": "seg-social",
+    "category": "Trámites",
+    "coverageNote": "Comprueba que el directorio ofrece el enlace para iniciar la solicitud."
   },
   {
     "id": "seg-social-cita-reserva",
-    "name": "Seguridad Social · Cita previa sin certificado",
+    "name": "Seguridad Social · Provincias del acceso sin certificado",
     "url": "https://w6.seg-social.es/ProsaInternetAnonimo/OnlineAccess?ARQ.SPM.ACTION=LOGIN&ARQ.SPM.APPTYPE=SERVICE&ARQ.IDAPP=CPMSWACS&ORGANISMO=I",
-    "marker": "<Provincias>"
+    "marker": "<Provincias>",
+    "siteId": "seg-social",
+    "category": "Trámites",
+    "coverageNote": "Comprueba que la respuesta inicial contiene al menos una provincia con código y nombre. La agenda queda sin verificar."
   },
   {
     "id": "sepe-cita",
     "name": "SEPE · Información de cita previa",
     "url": "https://sede.sepe.gob.es/portalSede/procedimientos-y-servicios/personas/proteccion-por-desempleo/cita-previa.html",
-    "marker": "Iniciar Solicitud"
+    "marker": "Iniciar Solicitud",
+    "siteId": "sepe",
+    "category": "Trámites",
+    "coverageNote": "Comprueba el enlace «Iniciar Solicitud» de la página de información."
   },
   {
     "id": "sepe-cita-aplicacion",
-    "name": "SEPE · Aplicación de cita previa",
+    "name": "SEPE · Página inicial de la aplicación de citas",
     "url": "https://citaprevia-sede.sepe.gob.es/citapreviasepe/?origen=sepe&codidioma=es",
-    "marker": "id=\"moduloNivelesServicio\""
+    "marker": "id=\"moduloNivelesServicio\"",
+    "siteId": "sepe",
+    "category": "Trámites",
+    "coverageNote": "Comprueba la estructura HTML inicial de la aplicación. La identificación, la carga interactiva y las citas disponibles quedan sin verificar."
   }
 ]
