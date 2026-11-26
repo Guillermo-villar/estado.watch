@@ -38,7 +38,7 @@ Con el emulador en marcha, `curl http://localhost:8787/__scheduled` ejecuta una 
 
 ## Qué se mide
 
-La sonda hace un GET por recurso al arrancar y repite cinco minutos después de terminar cada ronda. Sigue redirecciones, espera hasta 15 segundos y busca el marcador configurado en los primeros 256 KiB de la respuesta. En ficheros binarios con `markerType: "hex-prefix"`, solicita únicamente el rango inicial y compara esos bytes con la firma hexadecimal configurada. El tiempo mostrado incluye la lectura del contenido comprobado.
+La sonda hace un GET por recurso al arrancar y repite cinco minutos después de terminar cada ronda. Sigue redirecciones, espera hasta 15 segundos y busca el marcador configurado en los primeros 256 KiB de la respuesta. En ficheros binarios con `markerType: "hex-prefix"`, solicita únicamente el rango inicial y compara esos bytes con la firma hexadecimal configurada. El tiempo mostrado incluye la lectura del contenido comprobado. Si el resultado es una caída, la sonda repite la petición una vez cinco segundos después y guarda el resultado del reintento.
 
 - **Disponible** indica una respuesta 2xx con el marcador esperado.
 - **Caída observada** indica un error 5xx, de conexión o de tiempo de espera desde esta instancia. Una avería en la red de la sonda también puede producir ese resultado.
