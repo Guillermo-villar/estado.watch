@@ -21,6 +21,19 @@ El catálogo agrupa 18 recursos de ocho sitios públicos españoles. Las portada
 | Renfe · Trenes en tiempo real | La respuesta del visor de Alta Velocidad, Larga y Media Distancia contiene el campo `trenes`. | [Visor de largo recorrido](https://tiempo-real.largorecorrido.renfe.com/), [presentación oficial del visor](https://grupo.renfe.com/content/grupo-renfe/es/es/sala-de-prensa/noticias/2026/03/renfe-estrena-web-tiempo-real-trenes-alta-velocidad-larga-media-distancia) |
 | Renfe · Horarios GTFS | La descarga de horarios comienza con los bytes `50 4B 03 04` de una cabecera ZIP. La sonda solicita esos cuatro bytes con `Range: bytes=0-3`. | [Ficha del recurso en Renfe Data](https://data.renfe.com/es/dataset/horarios-de-alta-velocidad-larga-distancia-y-media-distancia/resource/25d6b043-9e47-4f99-bd91-edd51d782450) |
 
+## Fuentes en observación manual
+
+`npm run --silent observe` comprueba las seis URLs de [observation-sources.json](observation-sources.json) con un GET anónimo directo por recurso, de forma secuencial. Una redirección queda sin confirmar. La salida contiene una línea JSON por recurso con identificador, hora, duración y detalle. `marker_seen` indica que apareció el texto esperado entre los primeros 256 KiB. Los errores HTTP, fallos de conexión y respuestas sin el marcador producen `unconfirmed`. Las citas y el estado por provincia quedan sin verificar.
+
+| Fuente | Evidencia que se busca |
+| --- | --- |
+| Catastro · Consulta de inmueble | El nombre de campo `"bico"` en la respuesta para el edificio de oficinas de Cibeles 1, Madrid. [Operaciones del callejero](https://ovc.catastro.meh.es/OVCServWeb/OVCWcfCallejero/COVCCallejero.svc/json/help) |
+| AEAT · Cita previa | El identificador `FormParaQuien` en la respuesta del primer paso. [Petición de cita por internet](https://sede.agenciatributaria.gob.es/Sede/ayuda/consultas-informaticas/otros-servicios-ayuda-tecnica/peticion-cita-previa-traves-internet.html) |
+| Seguridad Social · Directorio y acceso sin certificado | `btnacceder_` en el directorio y la etiqueta `<Provincias>` en la respuesta del acceso sin certificado. [Guía de cita previa](https://revista.seg-social.es/-/c%C3%B3mo-solicitar-cita-previa-para-pensiones-y-otras-prestaciones-de-la-seguridad-social) |
+| SEPE · Información y aplicación | El texto «Iniciar Solicitud» en la página informativa y el identificador `moduloNivelesServicio` en el HTML de la aplicación. [Solicitud de cita previa](https://sede.sepe.gob.es/portalSede/procedimientos-y-servicios/personas/proteccion-por-desempleo/cita-previa/cita-previa-solicitud.html) |
+
+La ronda manual escribe sus resultados en la salida estándar. El servidor y el Worker siguen usando exclusivamente `services.json` para las mediciones periódicas, el historial y la API pública.
+
 ## Verificación del catálogo
 
 El 24 de noviembre de 2026 la sonda del monitor obtuvo HTTP 200 de las diez URLs de Cl@ve, Mi Carpeta Ciudadana, BOE, INE y Catastro sin redirecciones. Todos los marcadores aparecieron en los primeros 256 KiB de respuesta, interpretados como UTF-8 y comparados sin distinguir mayúsculas. La petición envió `Accept: application/json, application/xml;q=0.9, text/html;q=0.8, */*;q=0.1`, ya que la API del BOE requiere un tipo compatible.

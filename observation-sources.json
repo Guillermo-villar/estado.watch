@@ -1,0 +1,38 @@
+[
+  {
+    "id": "catastro-inmueble",
+    "name": "Catastro · Consulta de inmueble",
+    "url": "https://ovc.catastro.meh.es/OVCServWeb/OVCWcfCallejero/COVCCallejero.svc/json/Consulta_DNPRC?RefCat=1446401VK4714E0001HZ",
+    "marker": "\"bico\""
+  },
+  {
+    "id": "aeat-cita",
+    "name": "AEAT · Cita previa",
+    "url": "https://www2.agenciatributaria.gob.es/wlpl/TOCP-MUTE/internet/identificacion",
+    "marker": "FormParaQuien"
+  },
+  {
+    "id": "seg-social-cita",
+    "name": "Seguridad Social · Directorio de cita previa",
+    "url": "https://sede.seg-social.gob.es/wps/portal/sede/sede/Ciudadanos/cita%20previa%20para%20pensiones%20y%20otras%20prestaciones",
+    "marker": "btnacceder_"
+  },
+  {
+    "id": "seg-social-cita-reserva",
+    "name": "Seguridad Social · Cita previa sin certificado",
+    "url": "https://w6.seg-social.es/ProsaInternetAnonimo/OnlineAccess?ARQ.SPM.ACTION=LOGIN&ARQ.SPM.APPTYPE=SERVICE&ARQ.IDAPP=CPMSWACS&ORGANISMO=I",
+    "marker": "<Provincias>"
+  },
+  {
+    "id": "sepe-cita",
+    "name": "SEPE · Información de cita previa",
+    "url": "https://sede.sepe.gob.es/portalSede/procedimientos-y-servicios/personas/proteccion-por-desempleo/cita-previa.html",
+    "marker": "Iniciar Solicitud"
+  },
+  {
+    "id": "sepe-cita-aplicacion",
+    "name": "SEPE · Aplicación de cita previa",
+    "url": "https://citaprevia-sede.sepe.gob.es/citapreviasepe/?origen=sepe&codidioma=es",
+    "marker": "id=\"moduloNivelesServicio\""
+  }
+]
