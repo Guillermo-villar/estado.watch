@@ -1,10 +1,8 @@
-import sources from '../observation-sources.json' with { type: 'json' };
+import { directSources } from '../catalog.js';
 import { probe } from '../monitor.js';
 
-const request = (url, options) => fetch(url, { ...options, redirect: 'manual' });
-
-for (const source of sources) {
-  const { at, state, detail, ms } = await probe(source, request);
+for (const source of directSources) {
+  const { at, state, detail, ms } = await probe(source);
   console.log(JSON.stringify({
     id: source.id,
     at,

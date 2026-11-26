@@ -4,11 +4,11 @@ import { readFileSync, mkdirSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import { gzipSync } from 'node:zlib';
 import { longOutageDays, sampleOutages } from './outages.js';
-import { probe } from './monitor.js';
+import { services as catalog } from './catalog.js';
+import { probeAll } from './monitor.js';
 
 const here = (path) => fileURLToPath(new URL(path, import.meta.url));
 const sites = JSON.parse(readFileSync(here('sites.json'), 'utf8'));
-const catalog = JSON.parse(readFileSync(here('services.json'), 'utf8'));
 const services = catalog.map((service) => {
   const site = sites[service.siteId];
   if (!site) throw new Error('Web sin configurar para ' + service.id);
@@ -60,9 +60,7 @@ function refresh() {
 }
 refresh();
 async function collect() {
-  const observations = await Promise.all(
-    services.map((service) => probe(service)),
-  );
+  const observations = await probeAll(services);
   db.exec('BEGIN');
   try {
     observations.forEach(({ at, state, ms, detail }, index) => {
@@ -85,7 +83,7 @@ const routes = new Map([
   ['/assets/icon.svg', ['assets/icon.svg', 'image/svg+xml']],
 ]);
 for (const site of Object.values(sites)) {
-  routes.set(site.logo, [site.logo.slice(1), 'image/png']);
+  if (site.logo) routes.set(site.logo, [site.logo.slice(1), 'image/png']);
 }
 const server = createServer((req, res) => {
   const path = req.url.split('?')[0];

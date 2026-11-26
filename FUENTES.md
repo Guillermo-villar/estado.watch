@@ -1,6 +1,6 @@
 # Fuentes de estado.watch
 
-El catálogo agrupa 18 recursos de ocho sitios públicos españoles. Las portadas, las páginas informativas, los formularios de acceso, las APIs y el archivo de horarios admiten consultas HTTPS con `GET` anónimo. El resultado de cada comprobación se limita a la respuesta HTTP y al contenido esperado de la URL concreta, observados desde el lugar donde se ejecuta el monitor.
+El catálogo agrupa 24 recursos de once sitios públicos españoles. Las portadas, las páginas informativas, los formularios de acceso, las APIs y el archivo de horarios admiten consultas HTTPS con `GET` anónimo. El resultado de cada comprobación se limita a la respuesta HTTP y al contenido esperado de la URL concreta, observados desde el lugar donde se ejecuta el monitor.
 
 | Servicio | Qué comprueba | Documentación oficial |
 | --- | --- | --- |
@@ -21,18 +21,18 @@ El catálogo agrupa 18 recursos de ocho sitios públicos españoles. Las portada
 | Renfe · Trenes en tiempo real | La respuesta del visor de Alta Velocidad, Larga y Media Distancia contiene el campo `trenes`. | [Visor de largo recorrido](https://tiempo-real.largorecorrido.renfe.com/), [presentación oficial del visor](https://grupo.renfe.com/content/grupo-renfe/es/es/sala-de-prensa/noticias/2026/03/renfe-estrena-web-tiempo-real-trenes-alta-velocidad-larga-media-distancia) |
 | Renfe · Horarios GTFS | La descarga de horarios comienza con los bytes `50 4B 03 04` de una cabecera ZIP. La sonda solicita esos cuatro bytes con `Range: bytes=0-3`. | [Ficha del recurso en Renfe Data](https://data.renfe.com/es/dataset/horarios-de-alta-velocidad-larga-distancia-y-media-distancia/resource/25d6b043-9e47-4f99-bd91-edd51d782450) |
 
-## Fuentes en observación manual
+## Comprobaciones de Catastro, AEAT, Seguridad Social y SEPE
 
-`npm run --silent observe` comprueba las seis URLs de [observation-sources.json](observation-sources.json) con un GET anónimo directo por recurso, de forma secuencial. Una redirección queda sin confirmar. La salida contiene una línea JSON por recurso con identificador, hora, duración y detalle. `marker_seen` indica que apareció el texto esperado entre los primeros 256 KiB. Los errores HTTP, fallos de conexión y respuestas sin el marcador producen `unconfirmed`. Las citas y el estado por provincia quedan sin verificar.
+`npm run --silent observe` comprueba las seis URLs de [observation-sources.json](observation-sources.json) con un GET anónimo directo por recurso, de forma secuencial. Una redirección queda sin confirmar. La salida contiene una línea JSON por recurso con identificador, hora, duración y detalle. `marker_seen` indica que la respuesta contiene la evidencia de la tabla en sus primeros 256 KiB. Los errores HTTP, fallos de conexión y respuestas sin el marcador producen `unconfirmed`. Las citas y el estado por provincia quedan sin verificar.
 
 | Fuente | Evidencia que se busca |
 | --- | --- |
-| Catastro · Consulta de inmueble | El nombre de campo `"bico"` en la respuesta para el edificio de oficinas de Cibeles 1, Madrid. [Operaciones del callejero](https://ovc.catastro.meh.es/OVCServWeb/OVCWcfCallejero/COVCCallejero.svc/json/help) |
-| AEAT · Cita previa | El identificador `FormParaQuien` en la respuesta del primer paso. [Petición de cita por internet](https://sede.agenciatributaria.gob.es/Sede/ayuda/consultas-informaticas/otros-servicios-ayuda-tecnica/peticion-cita-previa-traves-internet.html) |
-| Seguridad Social · Directorio y acceso sin certificado | `btnacceder_` en el directorio y la etiqueta `<Provincias>` en la respuesta del acceso sin certificado. [Guía de cita previa](https://revista.seg-social.es/-/c%C3%B3mo-solicitar-cita-previa-para-pensiones-y-otras-prestaciones-de-la-seguridad-social) |
-| SEPE · Información y aplicación | El texto «Iniciar Solicitud» en la página informativa y el identificador `moduloNivelesServicio` en el HTML de la aplicación. [Solicitud de cita previa](https://sede.sepe.gob.es/portalSede/procedimientos-y-servicios/personas/proteccion-por-desempleo/cita-previa/cita-previa-solicitud.html) |
+| Catastro · Consulta de inmueble | Los componentes de la referencia devuelta por Catastro coinciden con los de Cibeles 1, Madrid. [Operaciones del callejero](https://ovc.catastro.meh.es/OVCServWeb/OVCWcfCallejero/COVCCallejero.svc/json/help) |
+| AEAT · Cita previa | El formulario `FormParaQuien` y el botón para continuar en el primer paso. [Petición de cita por internet](https://sede.agenciatributaria.gob.es/Sede/ayuda/consultas-informaticas/otros-servicios-ayuda-tecnica/peticion-cita-previa-traves-internet.html) |
+| Seguridad Social · Directorio y acceso sin certificado | El enlace del directorio al trámite sin certificado y al menos una provincia con código y nombre en los datos de arranque. [Guía de cita previa](https://revista.seg-social.es/-/c%C3%B3mo-solicitar-cita-previa-para-pensiones-y-otras-prestaciones-de-la-seguridad-social) |
+| SEPE · Información y aplicación | El enlace «Iniciar Solicitud» apunta a la página de solicitud del SEPE. El HTML de la aplicación contiene el selector de idioma y la estructura de citas. [Solicitud de cita previa](https://sede.sepe.gob.es/portalSede/procedimientos-y-servicios/personas/proteccion-por-desempleo/cita-previa/cita-previa-solicitud.html) |
 
-La ronda manual escribe sus resultados en la salida estándar. El servidor y el Worker siguen usando exclusivamente `services.json` para las mediciones periódicas, el historial y la API pública.
+El servidor y el Worker comprueban también estos seis recursos cada cinco minutos. Las rondas ejecutan hasta seis peticiones simultáneas y cuentan el tiempo de espera de cada una a partir de su turno. Un bloqueo, una redirección, un fallo de red o una respuesta sin la evidencia esperada se registra como «Sin confirmar». El detalle se conserva en el historial del recurso.
 
 ## Verificación del catálogo
 

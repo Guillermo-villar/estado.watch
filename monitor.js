@@ -1,19 +1,22 @@
 import { performance } from 'node:perf_hooks';
+import { hasSourceEvidence } from './source-evidence.js';
 
 export async function probe(service, request = fetch) {
+  const direct = service.verification === 'direct-content';
   const prefix = service.markerType === 'hex-prefix'
     ? Buffer.from(service.marker.replaceAll(' ', ''), 'hex')
     : null;
   const start = performance.now();
   const result = (state, detail) => ({
     at: new Date().toISOString(),
-    state,
+    state: direct && state === 'down' ? 'unknown' : state,
     detail,
     ms: Math.round(performance.now() - start),
   });
   try {
     const response = await request(service.url, {
       signal: AbortSignal.timeout(15000),
+      ...(direct ? { redirect: 'manual' } : {}),
       headers: {
         ...(prefix ? { Range: `bytes=0-${prefix.length - 1}` } : {}),
         'User-Agent': 'estado.watch/0.1 (public availability monitor)',
@@ -45,9 +48,10 @@ export async function probe(service, request = fetch) {
       await reader.cancel();
     }
     const body = Buffer.concat(chunks);
+    const text = prefix ? '' : body.toString('utf8');
     const matches = prefix
       ? body.equals(prefix)
-      : body.toString('utf8').toLowerCase().includes(service.marker.toLowerCase());
+      : text.toLowerCase().includes(service.marker.toLowerCase()) && (!direct || hasSourceEvidence(service, text));
     return result(
       matches ? 'up' : 'unknown',
       matches ? 'HTTP ' + response.status : 'Contenido inesperado',
@@ -64,4 +68,16 @@ export async function probe(service, request = fetch) {
         : 'Error de conexión desde la sonda',
     );
   }
+}
+
+export async function probeAll(services, request = fetch) {
+  const pending = services.entries();
+  const samples = new Array(services.length);
+  async function run() {
+    for (const [index, service] of pending) {
+      samples[index] = await probe(service, request);
+    }
+  }
+  await Promise.all(Array.from({ length: Math.min(6, services.length) }, run));
+  return samples;
 }
