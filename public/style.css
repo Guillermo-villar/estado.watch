@@ -187,6 +187,17 @@ a { color: inherit; }
 .pill[data-state='up'] { background: var(--up-bg); color: var(--up-fg); }
 .pill[data-state='down'] { background: var(--down-bg); color: var(--down-fg); }
 
+/* Columna «Ahora»: punto + estado, detalle debajo; el color va solo en el punto */
+.cols .col-state { padding-left: 20px; }
+.now { display: flex; flex-direction: column; min-width: 0; padding-left: 20px; border-left: 1px solid var(--line); line-height: 1.2; }
+.now-state { display: inline-flex; align-items: center; gap: 7px; font-size: 15px; font-weight: 500; color: var(--unknown-fg); white-space: nowrap; }
+.now-state::before { content: ''; flex: none; width: 8px; height: 8px; border-radius: 50%; background: var(--unknown); }
+.now small { margin-top: 5px; padding-left: 15px; font-size: 11.5px; color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.now[data-state='up'] .now-state, .now[data-state='down'] .now-state { color: var(--fg); }
+.now[data-state='up'] .now-state::before { background: var(--up); box-shadow: 0 0 0 3px var(--up-bg); }
+.now[data-state='down'] .now-state::before { background: var(--down); box-shadow: 0 0 0 3px var(--down-bg); }
+.service .now-state { font-size: 14px; }
+
 /* Servicios dentro de una web */
 .services { background: var(--soft); border-top: 1px solid var(--line); }
 .services > li + li { border-top: 1px dashed var(--line-strong); }
@@ -213,7 +224,9 @@ a { color: inherit; }
   .cols { display: none; }
   .row { grid-template-columns: minmax(0, 1fr) auto 16px; grid-template-areas: 'who state chev' 'life life life' 'recent recent recent'; gap: 10px 12px; }
   .row .who { grid-area: who; }
-  .row .pill { grid-area: state; justify-self: end; }
+  .row .now { grid-area: state; justify-self: end; align-items: flex-end; padding-left: 0; border-left: 0; }
+  .row .now small { display: none; }
+  .row .now-state { font-size: 13.5px; }
   .row .chev { grid-area: chev; }
   .row .lifetime { grid-area: life; display: flex; align-items: baseline; gap: 8px; text-align: left; }
   .row .lifetime .label { display: inline; font-size: 12px; color: var(--muted); }

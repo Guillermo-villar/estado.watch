@@ -28,6 +28,7 @@ let days = [];
 let selectedId;
 let pending = false;
 let timer;
+let renderedAt = Date.now();
 const openSites = new Set();
 
 function el(tag, className, text) {
@@ -124,7 +125,22 @@ function summarize(service, now) {
   const recent = totals(counts);
   const stale = Boolean(latest) && now - latestTime > dataset.intervalSeconds * 2000;
   const current = !latest || stale || !Object.hasOwn(labels, latest.state) ? 'unknown' : latest.state;
-  return { service, counts, recent, latest, latestTime, stale, current, lifetime: validLifetime(service.lifetime) };
+  const downSince = current === 'down' ? failingSince(service.samples, now) : 0;
+  return { service, counts, recent, latest, latestTime, stale, current, downSince, lifetime: validLifetime(service.lifetime) };
+}
+
+/* Inicio de la racha de fallos que sigue abierta: la primera de las mediciones «down» seguidas más recientes. */
+function failingSince(samples, now) {
+  const timed = samples
+    .map((sample) => ({ state: sample.state, time: Date.parse(sample.at) }))
+    .filter(({ time }) => Number.isFinite(time) && time <= now)
+    .sort((a, b) => b.time - a.time);
+  let since = 0;
+  for (const { state, time } of timed) {
+    if (state !== 'down') break;
+    since = time;
+  }
+  return since;
 }
 
 function totals(counts) {
@@ -167,10 +183,13 @@ function groupSites() {
     site.recent = totals(site.counts);
     site.lifetime = mergeLifetimes(site.reports.map((report) => report.lifetime));
     const states = new Set(site.reports.map((report) => report.current));
+    site.latestTime = Math.max(0, ...site.reports.map((report) => report.latestTime));
+    site.downSince = Math.min(...site.reports.map((report) => report.downSince || Infinity));
+    site.upCount = site.reports.filter((report) => report.current === 'up').length;
     site.current = states.has('down') ? 'down' : states.has('unknown') ? 'unknown' : 'up';
     site.label = states.has('down')
       ? site.reports.length > 1 ? 'Incidencia parcial' : labels.down
-      : states.has('unknown') && states.has('up') ? 'Parcial' : labels[site.current];
+      : labels[site.current];
   }
   return [...groups.values()];
 }
@@ -192,6 +211,45 @@ function pill(state, text) {
   const node = el('span', 'pill', text);
   node.dataset.state = state;
   return node;
+}
+
+function ago(time) {
+  const minutes = Math.floor((renderedAt - time) / 60000);
+  if (minutes < 1) return 'hace menos de 1 min';
+  if (minutes < 60) return `hace ${number.format(minutes)} min`;
+  if (minutes < 48 * 60) return `hace ${number.format(Math.floor(minutes / 60))} h`;
+  return `el ${dayShort.format(new Date(`${dateKey.format(time)}T12:00:00Z`))}`;
+}
+
+function since(time) {
+  return dateKey.format(time) === dateKey.format(renderedAt)
+    ? `desde las ${timeOnly.format(time)}`
+    : `desde el ${dayShort.format(new Date(`${dateKey.format(time)}T12:00:00Z`))}`;
+}
+
+/* Estado actual en dos líneas, como las demás columnas: punto + estado y un detalle debajo. */
+function nowCell(state, text, detail) {
+  const cell = el('span', 'now');
+  cell.dataset.state = state;
+  const label = el('span', 'now-state', text);
+  label.prepend(el('span', 'sr-only', 'Estado actual: '));
+  cell.append(label);
+  if (detail) cell.append(el('small', '', detail));
+  return cell;
+}
+
+function reportDetail(report) {
+  if (!report.latest) return 'sin mediciones';
+  if (report.current === 'down' && report.downSince) return since(report.downSince);
+  const ms = report.current === 'up' && Number.isFinite(report.latest.ms) ? ` · ${number.format(report.latest.ms)} ms` : '';
+  return `${ago(report.latestTime)}${ms}`;
+}
+
+function siteDetail(site) {
+  if (site.reports.length === 1) return reportDetail(site.reports[0]);
+  if (site.current === 'down' && Number.isFinite(site.downSince)) return since(site.downSince);
+  if (site.current === 'unknown' && site.upCount) return `${number.format(site.upCount)} de ${number.format(site.reports.length)} operativos`;
+  return site.latestTime ? ago(site.latestTime) : 'sin mediciones';
 }
 
 function chevron() {
@@ -272,7 +330,7 @@ function serviceRow(report) {
   text.append(el('strong', '', name), el('span', '', webAddress(report.service.url)?.pathname.replace(/\/$/, '') || '/'));
   who.append(text);
   const status = report.current === 'unknown' && report.latest && !report.stale ? 'No concluyente' : labels[report.current];
-  button.append(who, lifetimeCell(report.lifetime), chart(report.counts, report.recent), pill(report.current, status), chevron());
+  button.append(who, lifetimeCell(report.lifetime), chart(report.counts, report.recent), nowCell(report.current, status, reportDetail(report)), chevron());
   item.append(button);
   return item;
 }
@@ -292,7 +350,7 @@ function siteRow(site) {
   text.append(el('strong', '', site.name));
   if (site.domain) text.append(el('span', '', site.domain));
   who.append(siteLogo(site), text);
-  summary.append(who, lifetimeCell(site.lifetime), chart(site.counts, site.recent), pill(site.current, site.label), chevron());
+  summary.append(who, lifetimeCell(site.lifetime), chart(site.counts, site.recent), nowCell(site.current, site.label, siteDetail(site)), chevron());
   const services = el('ul', 'services');
   services.setAttribute('aria-label', `Servicios de ${site.name}`);
   services.append(...site.reports.map(serviceRow));
@@ -427,6 +485,7 @@ function renderDetail(report) {
 
 function render() {
   const now = Date.now();
+  renderedAt = now;
   days = dateWindow(now);
   reports = dataset.services.map((service) => summarize(service, now));
   sites = groupSites();
