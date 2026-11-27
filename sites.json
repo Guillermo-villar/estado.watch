@@ -46,10 +46,12 @@
   },
   "seg-social": {
     "name": "Seguridad Social",
-    "url": "https://sede.seg-social.gob.es/"
+    "url": "https://sede.seg-social.gob.es/",
+    "logo": "/assets/logos/seg-social.png"
   },
   "sepe": {
     "name": "Servicio Público de Empleo Estatal",
-    "url": "https://sede.sepe.gob.es/"
+    "url": "https://sede.sepe.gob.es/",
+    "logo": "/assets/logos/sepe.png"
   }
 }
