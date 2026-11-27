@@ -383,11 +383,11 @@ function renderList(announce = false) {
     list.replaceChildren(el('p', 'empty', reports.length ? 'Ninguna web coincide con el filtro.' : 'Todavía no hay servicios monitorizados.'));
     if (focused) query.focus({ preventScroll: true });
   }
-  const count = visible.length === sites.length
-    ? plural(sites.length, 'web', 'webs')
-    : `${number.format(visible.length)} de ${plural(sites.length, 'web', 'webs')}`;
-  byId('visible-count').textContent = count;
-  if (announce) byId('announcement').textContent = count;
+  if (announce) {
+    byId('announcement').textContent = visible.length === sites.length
+      ? plural(sites.length, 'web', 'webs')
+      : `${number.format(visible.length)} de ${plural(sites.length, 'web', 'webs')}`;
+  }
 }
 
 function renderSummary() {
@@ -492,7 +492,6 @@ function render() {
   renderSummary();
   filters.hidden = sites.length < 2;
   renderList();
-  byId('interval-description').textContent = `El estado queda sin confirmar si la última comprobación no fue concluyente o han pasado más de ${number.format(2 * dataset.intervalSeconds / 60)} min desde entonces.`;
   if (dialog.open) {
     const report = reports.find(({ service }) => service.id === selectedId);
     if (report) renderDetail(report);
