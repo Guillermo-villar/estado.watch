@@ -492,8 +492,6 @@ function render() {
   renderSummary();
   filters.hidden = sites.length < 2;
   renderList();
-  byId('coverage-description').textContent = `Se monitorizan ${plural(sites.length, 'web pública', 'webs públicas')} con ${plural(reports.length, 'servicio', 'servicios')} en total. Cada web agrupa sus servicios, que se ven al desplegar su fila.`;
-  byId('interval-description').textContent = `El estado queda sin confirmar si la última comprobación no fue concluyente o han pasado más de ${number.format(2 * dataset.intervalSeconds / 60)} min desde entonces.`;
   if (dialog.open) {
     const report = reports.find(({ service }) => service.id === selectedId);
     if (report) renderDetail(report);

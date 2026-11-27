@@ -133,18 +133,10 @@
       </div>
 
       <div class="board-foot">
-      <details class="method">
-        <summary>Cómo se mide</summary>
-        <ul>
-          <li id="coverage-description">Se monitorizan las webs de la tabla. Cada una agrupa uno o varios servicios, que se ven al desplegar su fila.</li>
-          <li>Cada cinco minutos se hace una petición GET a la URL del servicio. Se considera operativo cuando devuelve HTTP 2xx y contiene el marcador esperado.</li>
-          <li>Errores del servidor, de conexión o tiempos de espera cuentan como fallo. Si la sonda no puede resolver el dominio, la comprobación queda sin confirmar. Solo las comprobaciones concluyentes entran en el porcentaje.</li>
-          <li>La <strong>disponibilidad histórica</strong> es el porcentaje de comprobaciones concluyentes en las que el servicio estuvo operativo, desde la primera medición. Los totales de cada web y el global suman las mediciones de sus servicios.</li>
-          <li>Las barras cubren los <strong>últimos 30 días</strong> en hora peninsular. El amarillo indica fallos. El rojo indica que un mismo servicio acumuló más de tres horas seguidas entre comprobaciones fallidas. Si la caída cruza medianoche, se marcan ambos días.</li>
-          <li id="interval-description">El estado actual pasa a «sin confirmar» si la última comprobación no fue concluyente o está desactualizada.</li>
-          <li>Las sondas consultan directamente las webs y APIs de cada organismo. <a href="https://reforma-digital.es/developers/mcp">Catálogo de Reforma Digital</a>.</li>
-        </ul>
-      </details>
+        <details class="method">
+          <summary>Cómo se mide</summary>
+          <p>Comprobamos periódicamente si las webs de los servicios públicos funcionan. Registramos los resultados en un histórico público para que cualquiera pueda auditar la disponibilidad de estos servicios.</p>
+        </details>
         <ul class="legend" aria-label="Leyenda">
           <li><span class="swatch" data-state="up"></span>Sin fallos</li>
           <li><span class="swatch" data-state="partial"></span>Con fallos</li>
