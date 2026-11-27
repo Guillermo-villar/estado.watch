@@ -1,6 +1,6 @@
 # Iconos de los servicios públicos
 
-- `boe.png` se convirtió a PNG a partir del [favicon del BOE](https://www.boe.es/favicon.ico).
+- `boe.png` recorta las siglas azules BOE del [icono oficial de 180 píxeles](https://www.boe.es/apple-touch-icon.png).
 - `carpeta-ciudadana.png` es el símbolo recortado del [logotipo de Mi Carpeta Ciudadana](https://estaticoscarpeta.carpetaciudadana.gob.es/content/experience-fragments/carpeta-ciudadana/es/header/master2/_jcr_content/root/header/img2.coreimg.png/1757592106379/cc-.png).
 - `catastro.png` es el símbolo recortado del [logotipo de la Sede Electrónica del Catastro](https://www.sedecatastro.gob.es/masterpage/img/logosedegrande.png).
 - `cita-previa-dni.png` es la [placa de la Policía Nacional que utiliza el portal de cita previa](https://www.citapreviadnie.es/citaPreviaDni/images/placa.png).
