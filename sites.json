@@ -41,7 +41,8 @@
   },
   "aeat": {
     "name": "Agencia Tributaria",
-    "url": "https://sede.agenciatributaria.gob.es/"
+    "url": "https://sede.agenciatributaria.gob.es/",
+    "logo": "/assets/logos/aeat.png"
   },
   "seg-social": {
     "name": "Seguridad Social",
